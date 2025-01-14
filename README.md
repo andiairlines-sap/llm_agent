@@ -4,6 +4,8 @@
 **Preview** - This is a development preview, see it as my personal ideation / proof of concept version. Everything might change, interface features might be missing, probably many bugs or it might not even activate.\
 Nevertheless any feedback and discussions are highly welcome to influence the next steps early. Note that pull requests likely make no sense at the current state and issues are expected but feel free to open feature requests or discussions.
 
+## Installation
+Via abapGit. Prerequisite is the LLM Client --> https://github.com/abap-ai/llm_client
 ## Documentation
 Currently none, check the llm_agent_tests repo on how to use it.
 
