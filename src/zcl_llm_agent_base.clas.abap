@@ -20,6 +20,8 @@ CLASS zcl_llm_agent_base DEFINITION
     ALIASES add_tool    FOR zif_llm_agent~add_tool.
     ALIASES add_tools   FOR zif_llm_agent~add_tools.
     ALIASES get_tools   FOR zif_llm_agent~get_tools.
+    ALIASES get_options FOR zif_llm_agent~get_options.
+
 
   PROTECTED SECTION.
     DATA client         TYPE REF TO zif_llm_client.
@@ -70,6 +72,7 @@ CLASS zcl_llm_agent_base IMPLEMENTATION.
     DATA error TYPE REF TO zcx_llm_agent_error.
 
     status-is_running = abap_true.
+    status-is_done = abap_false.
 
     TRY.
         chat_request = create_chat_request( ).
@@ -310,6 +313,10 @@ CLASS zcl_llm_agent_base IMPLEMENTATION.
                                                                                attr1 = error->get_text( ) )
                                                  previous = error ).
     ENDTRY.
+  ENDMETHOD.
+
+  METHOD zif_llm_agent~get_options.
+    result = chat_request->options( ).
   ENDMETHOD.
 
 ENDCLASS.

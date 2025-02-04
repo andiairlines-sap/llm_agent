@@ -16,7 +16,7 @@ INTERFACE zif_llm_agent
     "! Memory entry structure
     BEGIN OF memory_entry,
       timestamp TYPE timestamp,
-      msg type zllm_msg,
+      msg       TYPE zllm_msg,
     END OF memory_entry,
     "! Memory entries collection
     memory_entries TYPE STANDARD TABLE OF memory_entry WITH EMPTY KEY.
@@ -76,5 +76,11 @@ INTERFACE zif_llm_agent
   "! @parameter result | <p class="shorttext synchronized">Available tools</p>
   METHODS get_tools
     RETURNING VALUE(result) TYPE zllm_tools.
+
+  "! <p class="shorttext synchronized">Get options reference</p>
+  "!
+  "! @parameter result | <p class="shorttext synchronized">Option reference</p>
+  METHODS get_options
+    RETURNING VALUE(result) TYPE REF TO zif_llm_options.
 
 ENDINTERFACE.

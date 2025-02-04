@@ -37,6 +37,11 @@
      <DESCRIPT>Gets agent memory</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>GET_OPTIONS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get options reference</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>GET_STATUS</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Gets current agent status</DESCRIPT>
@@ -106,6 +111,12 @@
      <SCONAME>RESULT</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Memory entries</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_OPTIONS</CMPNAME>
+     <SCONAME>RESULT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Option reference</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
      <CMPNAME>GET_STATUS</CMPNAME>
