@@ -1,23 +1,34 @@
 # ABAP LLM Agent Framework
 
+## Archived
+
+The agents were merged into the main [llm client](https://github.com/abap-ai/llm_client) repo to simplify things. This repo is therefore no more useful and will be archived. All features and further development in the llm client repo.
+
 ## Release Status
+
 **Preview** - This is a development preview, see it as my personal ideation / proof of concept version. Everything might change, interface features might be missing, probably many bugs or it might not even activate.\
 Nevertheless any feedback and discussions are highly welcome to influence the next steps early. Note that pull requests likely make no sense at the current state and issues are expected but feel free to open feature requests or discussions.
 
 ## Installation
-Via abapGit. Prerequisite is the LLM Client --> https://github.com/abap-ai/llm_client
+
+Via abapGit. Prerequisite is the LLM Client --> <https://github.com/abap-ai/llm_client>
+
 ## Documentation
+
 Currently none, check the llm_agent_tests repo on how to use it.
 
 ## Overview
+
 The Agent Framework aims at providing a simple way to use LLM features in ABAP. It builds upon the LLM Client. Running on 7.52 and above but not ABAP Cloud.\
 Planned features:
+
 - Multi-Step Agents capable of using default and custom (user provided) tools
 - Agents can either output text or abap data structures (as json schema) via Structured Outputs
 - Manager Agents for multi-agent workflows
 - Full step trace (optionally saved to the database)
 
 Considered additional features:
+
 - Planning mode optionally using a second LLM model (e.g. plan with o1-mini and execute via 4o-mini)
 - ReAct based flow instead of pure function calling
 
