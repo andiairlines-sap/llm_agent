@@ -1,17 +1,23 @@
 CLASS zcl_llm_agent_base DEFINITION
   PUBLIC
-  ABSTRACT
+  ABSTRACT  " Abstract like in Java, cannot be instantiated directly
   CREATE PUBLIC.
 
-  PUBLIC SECTION.
+  PUBLIC SECTION.  " Like public visibility in Java
+    " Interfaces must be explicitly implemented in ABAP (no implements keyword)
     INTERFACES zif_llm_agent.
     INTERFACES zif_llm_agent_internal.
 
+    " Constructor method (like Java constructor)
+    " IMPORTING parameters are like constructor parameters in Java
     METHODS constructor
-      IMPORTING !client TYPE REF TO zif_llm_client
-                tools   TYPE zllm_tools
-      RAISING   zcx_llm_agent_error.
+      IMPORTING 
+        !client TYPE REF TO zif_llm_client  " ! means required parameter
+        tools   TYPE zllm_tools
+      RAISING zcx_llm_agent_error.
 
+    " ALIASES creates method shortcuts (no Java equivalent)
+    " This allows calling methods directly on the class instead of through interface
     ALIASES execute     FOR zif_llm_agent~execute.
     ALIASES get_context FOR zif_llm_agent~get_context.
     ALIASES get_memory  FOR zif_llm_agent~get_memory.
@@ -22,18 +28,20 @@ CLASS zcl_llm_agent_base DEFINITION
     ALIASES get_tools   FOR zif_llm_agent~get_tools.
     ALIASES get_options FOR zif_llm_agent~get_options.
 
-
-  PROTECTED SECTION.
+  PROTECTED SECTION.  " Like protected in Java, visible to subclasses
+    " Instance variables (like private fields in Java)
     DATA client         TYPE REF TO zif_llm_client.
     DATA chat_request   TYPE REF TO zif_llm_chat_request.
     DATA memory         TYPE zif_llm_agent=>memory_entries.
     DATA status         TYPE zif_llm_agent=>status.
-    DATA max_iterations TYPE i VALUE 5.
+    DATA max_iterations TYPE i VALUE 5.  " i is integer type, with default value
     DATA tools          TYPE zllm_tools.
 
+    " Abstract method that must be implemented by concrete classes
     METHODS initialize ABSTRACT
       RAISING zcx_llm_agent_error.
 
+    " Helper methods for subclasses
     METHODS create_chat_request
       RETURNING VALUE(result) TYPE REF TO zif_llm_chat_request.
 
@@ -56,30 +64,39 @@ CLASS zcl_llm_agent_base DEFINITION
         IMPORTING
           memory TYPE zif_llm_agent=>memory_entry.
 
-  PRIVATE SECTION.
+  PRIVATE SECTION.  " Like private in Java
 ENDCLASS.
 
+" Implementation part (like class body in Java)
 CLASS zcl_llm_agent_base IMPLEMENTATION.
+
   METHOD constructor.
+    " me-> is like this. in Java
     me->client = client.
     me->tools = tools.
+    " VALUE #( ) is a constructor expression for structures
     status = VALUE #( is_running = abap_false
-                      is_done    = abap_false
-                      has_error  = abap_false ).
+                     is_done    = abap_false
+                     has_error  = abap_false ).
   ENDMETHOD.
 
   METHOD zif_llm_agent~execute.
+    " DATA declares local variables (like local vars in Java)
     DATA error TYPE REF TO zcx_llm_agent_error.
 
-    status-is_running = abap_true.
+    " Start execution
+    status-is_running = abap_true.  " - accesses structure fields
     status-is_done = abap_false.
 
-    TRY.
+    TRY.  " Like try in Java
         chat_request = create_chat_request( ).
 
+        " IS NOT INITIAL checks for non-null (like != null in Java) 
         IF prompt IS NOT INITIAL.
-          add_to_memory_internal( VALUE #( msg-role    = client->role_user
-                                           msg-content = prompt ) ).
+          " Add user message to memory
+          add_to_memory_internal( 
+            VALUE #( msg-role    = client->role_user
+                    msg-content = prompt ) ).
         ENDIF.
 
         " Prepare messages from memory
@@ -103,11 +120,12 @@ CLASS zcl_llm_agent_base IMPLEMENTATION.
           status-is_done = abap_true.
         ENDIF.
 
-      CLEANUP.
+      CLEANUP.  " Always executed (like finally in Java)
         status-is_running = abap_false.
     ENDTRY.
 
-    DATA(iteration) = 1.
+    " WHILE loop like in Java
+    DATA(iteration) = 1.  " DATA() infers type (like var in Java)
     WHILE status-is_done = abap_false.
       " Next execution
       result = client->chat( chat_request ).
@@ -133,10 +151,11 @@ CLASS zcl_llm_agent_base IMPLEMENTATION.
 
     ENDWHILE.
 
+    " Error handling
     IF error IS NOT INITIAL.
-      status-has_error = abap_true.
-      status-message   = error->get_text( ).
-      RAISE EXCEPTION error.
+      status-has_error = abap_true. 
+      status-message = error->get_text( ).
+      RAISE EXCEPTION error.  " Like throw in Java
     ENDIF.
   ENDMETHOD.
 
